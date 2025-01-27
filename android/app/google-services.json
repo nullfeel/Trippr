@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "198461873701",
+    "project_id": "trippr-flutter",
+    "storage_bucket": "trippr-flutter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198461873701:android:350d8b40cca2640295e9cc",
+        "android_client_info": {
+          "package_name": "com.kelompok7.trippr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYSnujtC9m8KTQ0rzcVXrrpkTv0DOkh-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

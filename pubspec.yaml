@@ -1,0 +1,68 @@
+name: trippr
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.2.1
+  animate_do: ^3.0.2
+  shape_of_view_null_safe: ^3.0.0
+  water_drop_nav_bar: ^2.2.2
+  firebase_core: ^3.10.1
+  firebase_auth: ^5.4.1
+  cloud_firestore: ^5.6.2
+  get: ^4.6.6
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.2
+
+flutter:
+  uses-material-design: true
+  assets:
+   - assets/img/logo.png
+   - assets/img/login_img.png
+   - assets/img/statue_of_unity.jpg
+   - assets/img/jaipur.jpg
+   - assets/img/sunset.jpg
+   - assets/img/tokyo.jpg
+   - assets/img/hotel1.jpg
+   - assets/img/hotel2.jpg
+   - assets/img/mountain.jpg
+   - assets/img/user.jpg
+   - assets/img/1.jpg
+   - assets/img/2.jpg
+   - assets/img/3.jpg
+   - assets/img/shutterstock_436817194.jpg
+   - assets/img/22bab5ad4b9aa1027ad00a84ea7493d2c0c5e666d43d3b9413e332bdbd3f1780.jpg
+   - assets/img/607d0368488549e7b9179724b0db4940.jpg
+   - assets/img/Sossusvlei.jpg
+   - assets/img/images.jpeg
+   - assets/img/download.jpeg
+   - assets/img/lake.png
+   - assets/img/museum.png
+   - assets/img/beach.png
+   - assets/img/boat.png
+   - assets/img/tricycle.png
+   - assets/img/paris.jpg
+
+
+   
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700

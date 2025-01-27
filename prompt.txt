@@ -1,0 +1,203 @@
+folder struct
+```
+│   firebase_options.dart
+│   main.dart
+│
+├───models
+│       category_model.dart
+│       favorite_model.dart
+│       intro_model.dart
+│       tab_model.dart
+│
+├───routes
+│       app_routes.dart
+│
+├───screens
+│       details_screen.dart
+│       favorite_screen.dart
+│       forgot_screen.dart
+│       home_screen.dart
+│       intro_screen.dart
+│       mail_screen.dart
+│       profile_screen.dart
+│       sign_in_screen.dart
+│       sign_up_screen.dart
+│       splash_screen.dart
+│       wrapper.dart
+│
+└───widget
+        midle_text.dart
+        painter.dart
+        text.dart
+```
+
+main.dart
+```
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: AppRoutes.splash,
+      routes: AppRoutes.routes,
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(221, 54, 121, 255))
+      ),
+    );
+  }
+}
+```
+
+routes
+```
+import 'package:flutter/material.dart';
+import 'package:trippr/screens/forgot_screen.dart';
+import 'package:trippr/screens/home_screen.dart';
+import '../screens/splash_screen.dart';
+import '../screens/intro_screen.dart';
+import '../screens/sign_in_screen.dart';
+import '../screens/sign_up_screen.dart';
+import 'package:trippr/screens/wrapper.dart';
+
+class AppRoutes {
+  static const splash = '/';
+  static const intro = '/intro';
+  static const signIn = '/sign-in';
+  static const signUp = '/sign-up';
+  static const forgot = '/forgot';
+  static const home = '/home';
+  static const detail = '/detail';
+
+  static Map<String, WidgetBuilder> routes = {
+    splash: (context) => SplashScreen(),
+    intro: (context) => IntroScreen(),
+    signIn: (context) => SignInPage(),
+    signUp: (context) => SignUpScreen(),
+    forgot: (context) => ForgotScreen(),
+    home: (context) => MainWrapper()
+  };
+}
+```
+sign_in_screen
+```
+class SignInPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Placeholder for the image or icon
+              Image.asset('assets/img/login_img.png', height: 200),
+              const SizedBox(height: 24),
+              Text(
+                "Sign in",
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Please login to continue to your account.",
+                style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              // Email TextField
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Email",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(214, 54, 121, 255))),
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const SizedBox(height: 16),
+              // Password TextField
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: "Password",
+                  suffixIcon: Icon(Icons.visibility_off),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(214, 54, 121, 255))),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, AppRoutes.forgot);
+                  },
+                  child: Text("Forgot Password?"),
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Sign in Button
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, AppRoutes.home);
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text("Sign in"),
+              ),
+              const SizedBox(height: 16),
+              Text("or", style: TextStyle(color: Colors.grey)),
+              const SizedBox(height: 16),
+              // Google Sign in Button
+              OutlinedButton.icon(
+                onPressed: () {
+                  // Handle Google Sign in action
+                },
+                style: OutlinedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                icon: Icon(Icons.account_circle),
+                label: Text("Sign in with Google"),
+              ),
+              const SizedBox(height: 16),
+              // Create Account link
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Need an account?"),
+                  TextButton(
+                    onPressed: () {
+                      // Handle Create Account action
+                    },
+                    child: Text("Create one"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+
+after successfully executing flutterfire configure --project=trippr-flutter, please add login auth to sign in screen using 
+firestore db
+collection user with field email,npm,password.
