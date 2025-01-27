@@ -9,6 +9,8 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  SignUpScreen({super.key});
+
   Future<void> _signUp(BuildContext context) async {
     final email = emailController.text.trim();
     final npm = npmController.text.trim();
@@ -23,38 +25,66 @@ class SignUpScreen extends StatelessWidget {
     }
 
     try {
-    UserCredential userCredential = 
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-    print('Auth success! UID: ${userCredential.user!.uid}');
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'email': email,
+        'npm': npm,
+        'name': name,
+        'password': password,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userCredential.user!.uid)
-        .set({
-          'email': email,
-          'npm': npm,
-          'name': name,
-          'password': password,
-          'createdAt': FieldValue.serverTimestamp(),
-        });
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
 
-    print('Firestore write successful!');
-    Navigator.pushReplacementNamed(context, AppRoutes.home);
-  } on FirebaseAuthException catch (e) {
-    print('Auth Error: ${e.code} - ${e.message}');
-    // ... existing error handling ...
-  } catch (e, stack) {
-    print('General Error: $e');
-    print('Stack trace: $stack');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error: $e')),
-    );
+      switch (e.code) {
+        case 'weak-password':
+          errorMessage = 'The password provided is too weak minimum 6 char';
+          break;
+        case 'email-already-in-use':
+          errorMessage = 'An account already exists for this email';
+          break;
+        case 'invalid-email':
+          errorMessage = 'The email address is not valid';
+          break;
+        default:
+          errorMessage = 'An error occurred during sign up';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An unexpected error occurred'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +95,9 @@ class SignUpScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/img/signup_img.png', height: 200),
+              Image.asset('assets/img/login_img.png', height: 200),
               const SizedBox(height: 24),
-              Text(
+              const Text(
                 "Create Account",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
@@ -85,7 +115,8 @@ class SignUpScreen extends StatelessWidget {
                   labelText: "Full Name",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(color: Color.fromARGB(214, 54, 121, 255)),
+                    borderSide: const BorderSide(
+                        color: Color.fromARGB(214, 54, 121, 255)),
                   ),
                 ),
               ),
@@ -97,7 +128,8 @@ class SignUpScreen extends StatelessWidget {
                   labelText: "NPM",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(color: Color.fromARGB(214, 54, 121, 255)),
+                    borderSide: const BorderSide(
+                        color: Color.fromARGB(214, 54, 121, 255)),
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -110,7 +142,8 @@ class SignUpScreen extends StatelessWidget {
                   labelText: "Email",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(color: Color.fromARGB(214, 54, 121, 255)),
+                    borderSide: const BorderSide(
+                        color: Color.fromARGB(214, 54, 121, 255)),
                   ),
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -122,10 +155,11 @@ class SignUpScreen extends StatelessWidget {
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: "Password",
-                  suffixIcon: Icon(Icons.visibility_off),
+                  suffixIcon: const Icon(Icons.visibility_off),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide(color: Color.fromARGB(214, 54, 121, 255)),
+                    borderSide: const BorderSide(
+                        color: Color.fromARGB(214, 54, 121, 255)),
                   ),
                 ),
               ),
@@ -134,24 +168,24 @@ class SignUpScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () => _signUp(context),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                child: Text("Sign Up"),
+                child: const Text("Sign Up"),
               ),
               const SizedBox(height: 16),
               // Already have account link
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account?"),
+                  const Text("Already have an account?"),
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, AppRoutes.signIn);
                     },
-                    child: Text("Sign In"),
+                    child: const Text("Sign In"),
                   ),
                 ],
               ),
